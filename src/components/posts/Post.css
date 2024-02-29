@@ -1,0 +1,47 @@
+.post-card {
+  /* border: 1px solid black; */
+  display: flex;
+  margin: auto;
+  flex-wrap: wrap;
+  margin: 5% 3% 0px 3%;
+  justify-content: center;
+
+  /* flex-flow: wrap; */
+}
+
+.post {
+  border: 1px solid black;
+  border-radius: 60px;
+  margin: 10px;
+  padding: 10px;
+  /* height: 100px; */
+  background-color: antiquewhite;
+  flex-basis: 30%;
+  min-height: 100px;
+  min-width: 30px;
+  box-shadow: 5px 5px 10px black;
+}
+
+.post-title {
+  font-size: x-large;
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 2%;
+  padding: 20px;
+}
+
+.post-topic {
+  text-align: center;
+  margin-top: 25px;
+  font-size: larger;
+}
+
+.post-likes {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.likes {
+  font-size: larger;
+  margin-right: 10px;
+}
