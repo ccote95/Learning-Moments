@@ -42,3 +42,14 @@
   margin-top: 30px;
   margin-left: 20px;
 }
+
+.likes-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+.btn-container {
+  margin-right: 10px;
+}
