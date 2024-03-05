@@ -18,18 +18,18 @@ export const PostDetailsView = () => {
   //   },[])
   console.log("these are posts", post);
   return (
-    <article>
-      <section>
-        <div>{post.title}</div>
-        <div>{post.user?.fullName}</div>
-        <div>{post.topic?.name}</div>
+    <article className="full-post">
+      <section className="post-info">
+        <div className="post-title">{post.title}</div>
+        <div className="post-author">{post.user?.fullName}</div>
+        <div className="post-topic">{post.topic?.name}</div>
       </section>
-      <section>
-        <div>{post.body}</div>
+      <section className="post-body">
+        <div className="body">{post.body}</div>
       </section>
-      <section>
-        <div>{post.date}</div>
-        <div>{post.likes?.length}</div>
+      <section className="date-likes">
+        <div className="date">{post.date}</div>
+        <div className="likes">{post.likes?.length}</div>
       </section>
     </article>
   );
