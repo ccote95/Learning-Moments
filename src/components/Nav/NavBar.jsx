@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import { Posts } from "../posts/Allposts.jsx";
 
 export const NavBar = () => {
   const navigate = useNavigate();
