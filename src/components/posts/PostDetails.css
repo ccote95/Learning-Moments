@@ -1,0 +1,44 @@
+.full-post {
+  border: 1px solid black;
+  border-radius: 20px;
+  margin: auto;
+  margin-top: 40px;
+  max-width: 70%;
+  background-color: antiquewhite;
+
+  box-shadow: 5px 5px 15px 9px #000000;
+}
+.pst-details-title {
+  margin-top: 15px;
+  margin-left: 20px;
+  font-weight: bold;
+  font-size: larger;
+}
+
+.post-author {
+  margin-left: 20px;
+  margin-top: 5px;
+  font-size: large;
+  font-weight: 500;
+}
+
+.post-details-topic {
+  margin-left: 20px;
+  margin-top: 5px;
+}
+
+.post-body {
+  margin-left: 30px;
+  margin-top: 15px;
+  font-size: larger;
+}
+
+.post-likes {
+  text-align: right;
+  margin-right: 40px;
+}
+
+.date {
+  margin-top: 30px;
+  margin-left: 20px;
+}
