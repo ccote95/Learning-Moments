@@ -36,7 +36,7 @@ export const PostDetailsView = ({ currentUser }) => {
             {currentUser.id != post.userId ? (
               <button className="btn">Like</button>
             ) : (
-              ""
+              <button>Edit Post</button>
             )}
           </div>
           <div className="post-likes">{post.likes?.length} Likes</div>
