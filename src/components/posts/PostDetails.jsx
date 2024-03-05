@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllPosts, getPostById } from "../../services/postService.jsx";
+import { createLike, getPostById } from "../../services/postService.jsx";
 import { useParams } from "react-router-dom";
 import "./PostDetails.css";
 
@@ -8,15 +8,25 @@ export const PostDetailsView = ({ currentUser }) => {
   const { postId } = useParams();
 
   useEffect(() => {
-    getPostById(postId).then((post) => {
-      // const postObj = data[0];
-      setPost(post);
-    });
+    refreshPage();
   }, []);
 
-  //   useEffect(() => {
-  //     const foundPost = post
-  //   },[])
+  const refreshPage = () => {
+    getPostById(postId).then((post) => {
+      setPost(post);
+    });
+  };
+
+  const handleLike = () => {
+    const likedPost = {
+      userId: currentUser.id,
+      postId: post.id,
+      isLiked: true,
+      date: new Date().toDateString(),
+    };
+    createLike(likedPost).then(refreshPage);
+  };
+
   console.log("these are posts", post);
   return (
     <article className="full-post">
@@ -34,7 +44,9 @@ export const PostDetailsView = ({ currentUser }) => {
         <div className="likes-container">
           <div className="btn-container">
             {currentUser.id != post.userId ? (
-              <button className="btn">Like</button>
+              <button className="btn" onClick={handleLike}>
+                Like
+              </button>
             ) : (
               <button>Edit Post</button>
             )}
