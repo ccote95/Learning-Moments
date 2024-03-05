@@ -5,6 +5,8 @@ import { PostLayout } from "./PostLayout.jsx";
 import { PostFilterBar } from "./PostFiler.jsx";
 import { GetAllTopics } from "../../services/TopicService.jsx";
 import { SearchTopic } from "./SearchBar.jsx";
+import { Link } from "react-router-dom";
+import "./Post.css";
 
 export const Posts = () => {
   const [allPosts, setAllPosts] = useState([]);
