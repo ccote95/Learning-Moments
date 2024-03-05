@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Routes } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { Posts } from "../components/posts/Allposts.jsx";
 
 export const ApplicationViews = () => {
@@ -14,15 +14,7 @@ export const ApplicationViews = () => {
   return (
     <>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              {/* <Navbar />
-              <Outlet /> */}
-            </>
-          }
-        >
+        <Route path="/">
           <Route index element={<Posts />} />
         </Route>
       </Routes>
