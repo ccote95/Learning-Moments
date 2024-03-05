@@ -1,17 +1,21 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Posts } from "../posts/Allposts.jsx";
+import "./NavBar.css";
 
 export const NavBar = () => {
   const navigate = useNavigate();
 
   return (
-    <ul>
-      <li>
-        <Link to="/posts">All Posts</Link>
+    <ul className="navbar">
+      <li className="navbar-item">
+        <Link to="/" className="navbar-link ">
+          All Posts
+        </Link>
       </li>
       {localStorage.getItem("learning_user") ? (
-        <li>
+        <li className="navbar-item navbar-logout">
           <Link
+            className="navbar-link"
             to=""
             onClick={() => {
               localStorage.removeItem("learning_user");
