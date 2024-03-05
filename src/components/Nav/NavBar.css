@@ -1,0 +1,22 @@
+.navbar {
+  display: flex;
+  flex-wrap: nowrap;
+  margin: 0;
+  margin-bottom: 5px;
+  width: 100%;
+  padding: 0.5rem;
+  background-color: gray;
+}
+
+.navbar-item {
+  flex-basis: 20%;
+  list-style-type: none;
+  text-align: center;
+  color: whitesmoke;
+}
+
+.navbar-link {
+  text-decoration: none;
+  color: black;
+  letter-spacing: 0.5px;
+}

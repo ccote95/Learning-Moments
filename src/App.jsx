@@ -9,9 +9,6 @@ import { Route, Routes } from "react-router-dom";
 export const App = () => {
   return (
     <>
-      <div className="title">
-        <h1>Welcome to Learning Moments!</h1>
-      </div>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
