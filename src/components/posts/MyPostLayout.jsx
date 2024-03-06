@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { deletePost } from "../../services/postService.jsx";
 
 export const MyPostLayout = ({ post, refresh }) => {
@@ -7,7 +8,14 @@ export const MyPostLayout = ({ post, refresh }) => {
 
   return (
     <div className="post">
-      <div className="post-title">{post.title}</div>
+      <div className="post-title">
+        <Link
+          to={`/posts/${post.id}`}
+          style={{ textDecoration: "none", color: "black" }}
+        >
+          {post.title}
+        </Link>
+      </div>
 
       <div className="btn-container">
         <button className="delete-btn" onClick={handleDelete}>
