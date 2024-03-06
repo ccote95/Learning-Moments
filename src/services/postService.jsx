@@ -48,13 +48,13 @@ export const modifyLike = (currentLike) => {
   });
 };
 
-export const deletePost = () => {
+export const deletePost = (post) => {
   const postOptions = {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(),
+    body: JSON.stringify(post),
   };
-  return fetch("http://localhost:8000/posts", postOptions);
+  return fetch(`http://localhost:8000/posts/${post.id}`, postOptions);
 };
