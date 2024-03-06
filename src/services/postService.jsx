@@ -31,3 +31,13 @@ export const createNewPost = (newPost) => {
   };
   return fetch("http://localhost:8000/posts", postOptions);
 };
+
+export const modifyLike = (currentLike) => {
+  return fetch(`http://localhost:8000/likes/${currentLike.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(currentLike),
+  });
+};
