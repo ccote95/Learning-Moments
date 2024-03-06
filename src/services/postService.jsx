@@ -10,6 +10,12 @@ export const getPostById = (postId) => {
   ).then((res) => res.json());
 };
 
+export const getPostByCurrentUserId = (id) => {
+  return fetch(`http://localhost:8000/posts?userId=${id}`).then((res) =>
+    res.json()
+  );
+};
+
 export const createLike = (likedPost) => {
   const postOptions = {
     method: "POST",
@@ -40,4 +46,15 @@ export const modifyLike = (currentLike) => {
     },
     body: JSON.stringify(currentLike),
   });
+};
+
+export const deletePost = (post) => {
+  const postOptions = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(post),
+  };
+  return fetch(`http://localhost:8000/posts/${post.id}`, postOptions);
 };
