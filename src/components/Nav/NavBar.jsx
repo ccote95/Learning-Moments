@@ -16,7 +16,7 @@ export const NavBar = () => {
           New Post
         </Link>
       </li>
-      <li>
+      <li className="navbar-item">
         <Link to="/myposts" className="navbar-link">
           My Posts
         </Link>
