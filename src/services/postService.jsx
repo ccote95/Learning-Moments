@@ -47,3 +47,14 @@ export const modifyLike = (currentLike) => {
     body: JSON.stringify(currentLike),
   });
 };
+
+export const deletePost = () => {
+  const postOptions = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(),
+  };
+  return fetch("http://localhost:8000/posts", postOptions);
+};
