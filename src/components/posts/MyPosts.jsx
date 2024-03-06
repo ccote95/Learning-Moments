@@ -1,33 +1,41 @@
 import { useParams } from "react-router";
-import { getPostById } from "../../services/postService.jsx";
+import { Link } from "react-router-dom";
+import {
+  getPostByCurrentUserId,
+  getPostById,
+} from "../../services/postService.jsx";
 import { useEffect, useState } from "react";
 
 export const MyPost = ({ currentUser }) => {
-  const { postId } = useParams();
   const [post, setPost] = useState({});
-  const [currentUsersPosts, setCurrentUsersPosts] = useState({});
+  const [currentUsersPosts, setCurrentUsersPosts] = useState([]);
+  //   const [currentUser, setCurrentUser] = useState();
 
   useEffect(() => {
-    refreshPage();
-  }, []);
-
-  const refreshPage = () => {
-    getPostById(postId).then((post) => {
-      setPost(post);
-    });
-  };
-
-  useEffect(() => {
-    if (post.userId === currentUser.id) {
-      setCurrentUsersPosts(post);
+    if (currentUser.id > 0) {
+      getPostByCurrentUserId(parseInt(currentUser.id)).then((userPosts) => {
+        setCurrentUsersPosts(userPosts);
+      });
     }
-  }, [post, currentUser]);
+  }, [currentUser]);
+  console.log(currentUsersPosts);
 
   return (
     <div className="post-card">
-      <div className="post">
-        <div className="post-title">{currentUsersPosts.title}</div>
-      </div>
+      {currentUsersPosts.map((post) => {
+        return (
+          <div className="post">
+            <div className="post-title">
+              <Link
+                to={`/posts/${post.id}`}
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                {post.title}
+              </Link>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 };
