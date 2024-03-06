@@ -10,17 +10,25 @@ import "./MyPost.css";
 import { MyPostLayout } from "./MyPostLayout.jsx";
 
 export const MyPost = ({ currentUser }) => {
-  //   const [post, setPost] = useState({});
   const [currentUsersPosts, setCurrentUsersPosts] = useState([]);
-  //   const [currentUser, setCurrentUser] = useState();
+  useEffect(() => {
+    if (currentUser.id > 0) {
+      getPostByCurrentUserId(parseInt(currentUser.id)).then((userPosts) => {
+        setCurrentUsersPosts(userPosts);
+        console.log(userPosts);
+      });
+    }
+  }, []);
 
   useEffect(() => {
     if (currentUser.id > 0) {
       getPostByCurrentUserId(parseInt(currentUser.id)).then((userPosts) => {
         setCurrentUsersPosts(userPosts);
+        console.log(userPosts);
       });
     }
   }, [currentUser]);
+  console.log("my posts rendering", currentUsersPosts);
 
   const refreshAfterDelete = () => {
     getPostByCurrentUserId(parseInt(currentUser.id)).then((userPosts) => {

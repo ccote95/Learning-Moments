@@ -3,12 +3,14 @@ import { GetAllTopics } from "../../services/TopicService.jsx";
 import { TopicDropDown } from "./Dropdown.jsx";
 import "./NewPost.css";
 import { createNewPost } from "../../services/postService.jsx";
+import { useNavigate } from "react-router";
 
 export const NewPost = ({ currentUser }) => {
   const [allTopics, setAllTopics] = useState([]);
   const [titleInput, setTitleInput] = useState("");
   const [newPostTopic, setNewPostTopic] = useState();
   const [newPostBody, setNewPostBody] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     GetAllTopics().then((topicArray) => {
@@ -26,6 +28,7 @@ export const NewPost = ({ currentUser }) => {
       date: new Date().toDateString(),
     };
     createNewPost(newPostObject);
+    navigate(`/myposts`);
   };
 
   return (
