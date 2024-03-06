@@ -5,6 +5,7 @@ import {
   getPostById,
 } from "../../services/postService.jsx";
 import { useEffect, useState } from "react";
+import "./MyPost.css";
 
 export const MyPost = ({ currentUser }) => {
   const [post, setPost] = useState({});
@@ -32,6 +33,9 @@ export const MyPost = ({ currentUser }) => {
               >
                 {post.title}
               </Link>
+            </div>
+            <div className="btn-container">
+              <button className="delete-btn">DELETE</button>
             </div>
           </div>
         );
