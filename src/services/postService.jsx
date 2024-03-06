@@ -21,13 +21,13 @@ export const createLike = (likedPost) => {
   return fetch("http://localhost:8000/likes", postOptions);
 };
 
-export const createNewPost = () => {
+export const createNewPost = (newPost) => {
   const postOptions = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(),
+    body: JSON.stringify(newPost),
   };
   return fetch("http://localhost:8000/posts", postOptions);
 };

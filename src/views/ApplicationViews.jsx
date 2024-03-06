@@ -33,7 +33,7 @@ export const ApplicationViews = () => {
               element={<PostDetailsView currentUser={currentUser} />}
             />
           </Route>
-          <Route path="newpost" element={<NewPost />}>
+          <Route path="newpost" element={<NewPost currentUser={currentUser} />}>
             {/* <Route element={<NewPost />} /> */}
           </Route>
         </Route>
