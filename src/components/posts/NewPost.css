@@ -1,0 +1,38 @@
+.form-container {
+  border: 2px solid black;
+  border-radius: 10px;
+  width: 40%;
+
+  background-color: antiquewhite;
+  box-shadow: 5px 5px 15px 9px #000000;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  margin-top: 7em;
+}
+.post-text {
+  margin-top: 15px;
+  display: flex;
+}
+
+.text {
+  width: 50%;
+  height: 40px;
+}
+
+.form {
+  margin: 3px 0 3px 5px;
+}
+
+.new-pst-topic {
+  margin-top: 7px;
+}
+
+.save-btn {
+  margin-left: auto;
+  margin-right: 5px;
+  height: 30px;
+  align-self: flex-end;
+}
