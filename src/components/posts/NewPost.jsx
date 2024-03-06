@@ -39,3 +39,8 @@ export const NewPost = () => {
     </div>
   );
 };
+
+/* need to write the functionality of the save button
+when a user has filled out each part of the form only then should the send button work
+when a user hits save it should send the post to the database, it will need the post title, topic, body, currentuser
+ */
