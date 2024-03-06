@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { createLike, getPostById } from "../../services/postService.jsx";
+import {
+  createLike,
+  getPostById,
+  modifyLike,
+} from "../../services/postService.jsx";
 import { useParams } from "react-router-dom";
 import "./PostDetails.css";
 
@@ -7,6 +11,7 @@ export const PostDetailsView = ({ currentUser }) => {
   const [post, setPost] = useState({});
   const { postId } = useParams();
   const [hasLikedPost, setHasLikedPost] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
     refreshPage();
@@ -25,10 +30,28 @@ export const PostDetailsView = ({ currentUser }) => {
     }
   }, [post, currentUser]);
 
+  useEffect(() => {
+    if (hasLikedPost === true) {
+      const currentUserLike = post.likes.find(
+        (like) => currentUser.id === like.userId
+      );
+      setIsLiked(currentUserLike.isLiked);
+    }
+  }, [post, hasLikedPost]);
+
   const refreshPage = () => {
     getPostById(postId).then((post) => {
       setPost(post);
     });
+  };
+
+  const changeLikedState = () => {
+    const currentLike = post.likes.find(
+      (like) => like.userId === currentUser.id
+    );
+
+    currentLike.isLiked = !currentLike.isLiked;
+    modifyLike(currentLike).then(refreshPage);
   };
 
   const handleLike = () => {
@@ -39,6 +62,14 @@ export const PostDetailsView = ({ currentUser }) => {
       date: new Date().toDateString(),
     };
     createLike(likedPost).then(refreshPage);
+  };
+
+  const likeAndUnlike = () => {
+    if (hasLikedPost === false) {
+      handleLike();
+    } else {
+      changeLikedState();
+    }
   };
 
   console.log("these are posts", post);
@@ -58,10 +89,10 @@ export const PostDetailsView = ({ currentUser }) => {
         <div className="likes-container">
           <div className="btn-container">
             {currentUser.id != post.userId ? (
-              hasLikedPost ? (
-                <button>Unlike</button>
+              isLiked ? (
+                <button onClick={likeAndUnlike}>Unlike</button>
               ) : (
-                <button className="btn" onClick={handleLike}>
+                <button className="btn" onClick={likeAndUnlike}>
                   Like
                 </button>
               )
@@ -69,7 +100,9 @@ export const PostDetailsView = ({ currentUser }) => {
               <button>Edit Post</button>
             )}
           </div>
-          <div className="post-likes">{post.likes?.length} Likes</div>
+          <div className="post-likes">
+            {post.likes?.filter((like) => like.isLiked === true).length} Likes
+          </div>
         </div>
       </section>
     </article>

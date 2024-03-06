@@ -2,6 +2,7 @@ import "./Post.css";
 import { Link } from "react-router-dom";
 
 export const PostLayout = ({ post }) => {
+  const filteredLikes = post.likes.filter((like) => like.isLiked === true);
   return (
     <div className="post">
       <div className="post-title">
@@ -17,7 +18,7 @@ export const PostLayout = ({ post }) => {
 
       <div className="post-likes">
         <span className="likes">Likes:</span>
-        {post.likes.length}
+        {filteredLikes.length}
       </div>
     </div>
   );
