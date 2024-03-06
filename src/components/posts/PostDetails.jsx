@@ -6,10 +6,24 @@ import "./PostDetails.css";
 export const PostDetailsView = ({ currentUser }) => {
   const [post, setPost] = useState({});
   const { postId } = useParams();
+  const [hasLikedPost, setHasLikedPost] = useState(false);
 
   useEffect(() => {
     refreshPage();
   }, []);
+
+  // if the current user id matches a like in the likes database set haslikepost to true
+  useEffect(() => {
+    if (post.likes) {
+      const likedPost = post.likes.find(
+        (like) => like.userId === currentUser.id
+      );
+
+      if (likedPost) {
+        setHasLikedPost(true);
+      }
+    }
+  }, [post, currentUser]);
 
   const refreshPage = () => {
     getPostById(postId).then((post) => {
@@ -44,9 +58,13 @@ export const PostDetailsView = ({ currentUser }) => {
         <div className="likes-container">
           <div className="btn-container">
             {currentUser.id != post.userId ? (
-              <button className="btn" onClick={handleLike}>
-                Like
-              </button>
+              hasLikedPost ? (
+                <button>Unlike</button>
+              ) : (
+                <button className="btn" onClick={handleLike}>
+                  Like
+                </button>
+              )
             ) : (
               <button>Edit Post</button>
             )}
@@ -57,3 +75,5 @@ export const PostDetailsView = ({ currentUser }) => {
     </article>
   );
 };
+
+// figure out a way to check if the current user had already liked the post. if not then show the button to like. if they have dont show the button at all
