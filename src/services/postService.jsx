@@ -10,6 +10,12 @@ export const getPostById = (postId) => {
   ).then((res) => res.json());
 };
 
+export const getPostByCurrentUserId = (currentUser) => {
+  return fetch(` http://localhost:8000/posts/${currentUser.id}`).then((res) =>
+    res.json()
+  );
+};
+
 export const createLike = (likedPost) => {
   const postOptions = {
     method: "POST",
