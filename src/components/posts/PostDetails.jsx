@@ -73,7 +73,10 @@ export const PostDetailsView = ({ currentUser }) => {
     }
   };
 
-  console.log("these are posts", post);
+  const handleEditPostBtnClick = () => {
+    navigate(`/myposts/${post.id}`);
+  };
+
   return (
     <article className="full-post">
       <section className="post-info">
@@ -98,13 +101,7 @@ export const PostDetailsView = ({ currentUser }) => {
                 </button>
               )
             ) : (
-              <button
-                onClick={() => {
-                  navigate(`/myposts/${post.id}`);
-                }}
-              >
-                Edit Post
-              </button>
+              <button onClick={handleEditPostBtnClick}>Edit Post</button>
             )}
           </div>
           <div className="post-likes">

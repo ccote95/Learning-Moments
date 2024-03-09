@@ -2,15 +2,18 @@ import { useEffect, useState } from "react";
 import { GetAllTopics } from "../../services/TopicService.jsx";
 import { TopicDropDown } from "./Dropdown.jsx";
 import "./NewPost.css";
-import { createNewPost } from "../../services/postService.jsx";
+import { createNewPost, getPostById } from "../../services/postService.jsx";
 import { useNavigate } from "react-router";
-
+import { useParams } from "react-router-dom";
 export const NewPost = ({ currentUser }) => {
+  const [post, setPost] = useState({});
   const [allTopics, setAllTopics] = useState([]);
   const [titleInput, setTitleInput] = useState("");
   const [newPostTopic, setNewPostTopic] = useState();
   const [newPostBody, setNewPostBody] = useState("");
+  const [selectedOption, setSelectedOption] = useState({});
   const navigate = useNavigate();
+  const { postId } = useParams();
 
   useEffect(() => {
     GetAllTopics().then((topicArray) => {
@@ -18,8 +21,26 @@ export const NewPost = ({ currentUser }) => {
     });
   }, []);
 
+  useEffect(() => {
+    if (postId) {
+      getPostById(postId).then((postObj) => {
+        setPost(postObj);
+        setSelectedOption(postObj.topic);
+      });
+    }
+  }, [postId]);
+
   const handleSave = (e) => {
     e.preventDefault();
+    if (postId) {
+      const updatedPost = {
+        userId: currentUser.id,
+        title: titleInput,
+        topicId: parseInt(newPostTopic),
+        body: newPostBody,
+        date: post.date,
+      };
+    }
     const newPostObject = {
       userId: currentUser.id,
       title: titleInput,
@@ -37,7 +58,9 @@ export const NewPost = ({ currentUser }) => {
         <form className="form" onSubmit={handleSave}>
           <div className="new-pst-title">
             <input
+              className="title-input"
               type="text"
+              value={post.title}
               placeholder="Post Title"
               required
               onChange={(event) => {
@@ -46,24 +69,42 @@ export const NewPost = ({ currentUser }) => {
             />
           </div>
           <div>
-            <select
-              required
-              className="new-pst-topic"
-              defaultValue="0"
-              onChange={(event) => {
-                setNewPostTopic(event.target.value);
-              }}
-            >
-              <option>All Topics</option>
-              {allTopics.map((topic) => {
-                return <TopicDropDown topic={topic} key={topic.id} />;
-              })}
-            </select>
+            {postId ? (
+              <select
+                required
+                value={selectedOption.id}
+                className="new-pst-topic"
+                onChange={(event) => {
+                  setNewPostTopic(event.target.value);
+                }}
+              >
+                <option>All Topics</option>
+                {allTopics.map((topic) => {
+                  return <TopicDropDown topic={topic} key={topic.id} />;
+                })}
+              </select>
+            ) : (
+              <select
+                required
+                // value={post.topic}
+                className="new-pst-topic"
+                defaultValue="0"
+                onChange={(event) => {
+                  setNewPostTopic(event.target.value);
+                }}
+              >
+                <option>All Topics</option>
+                {allTopics.map((topic) => {
+                  return <TopicDropDown topic={topic} key={topic.id} />;
+                })}
+              </select>
+            )}
           </div>
           <div className="post-text">
             <textarea
               required
               className="text"
+              value={post.body}
               type="text"
               placeholder="type your post here"
               onChange={(event) => {
