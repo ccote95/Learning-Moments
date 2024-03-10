@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import { GetAllTopics } from "../../services/TopicService.jsx";
 import { TopicDropDown } from "./Dropdown.jsx";
 import "./NewPost.css";
-import { createNewPost, getPostById } from "../../services/postService.jsx";
+import {
+  createNewPost,
+  getPostByIdForEdit,
+  updatePost,
+} from "../../services/postService.jsx";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
 export const NewPost = ({ currentUser }) => {
   const [post, setPost] = useState({});
   const [allTopics, setAllTopics] = useState([]);
-  const [titleInput, setTitleInput] = useState("");
-  const [newPostTopic, setNewPostTopic] = useState();
-  const [newPostBody, setNewPostBody] = useState("");
-  const [selectedOption, setSelectedOption] = useState({});
   const navigate = useNavigate();
   const { postId } = useParams();
 
@@ -23,9 +23,8 @@ export const NewPost = ({ currentUser }) => {
 
   useEffect(() => {
     if (postId) {
-      getPostById(postId).then((postObj) => {
+      getPostByIdForEdit(postId).then((postObj) => {
         setPost(postObj);
-        setSelectedOption(postObj.topic);
       });
     }
   }, [postId]);
@@ -34,22 +33,28 @@ export const NewPost = ({ currentUser }) => {
     e.preventDefault();
     if (postId) {
       const updatedPost = {
+        id: post.id,
         userId: currentUser.id,
-        title: titleInput,
-        topicId: parseInt(newPostTopic),
-        body: newPostBody,
+        title: post.title,
+        topicId: parseInt(post.topicId),
+        body: post.body,
         date: post.date,
       };
+
+      updatePost(updatedPost).then(() => {
+        navigate(`/myposts`);
+      });
+    } else {
+      const newPostObject = {
+        userId: currentUser.id,
+        title: post.title,
+        topicId: parseInt(post.topicId),
+        body: post.body,
+        date: new Date().toDateString(),
+      };
+      createNewPost(newPostObject);
+      navigate(`/myposts`);
     }
-    const newPostObject = {
-      userId: currentUser.id,
-      title: titleInput,
-      topicId: parseInt(newPostTopic),
-      body: newPostBody,
-      date: new Date().toDateString(),
-    };
-    createNewPost(newPostObject);
-    navigate(`/myposts`);
   };
 
   return (
@@ -60,45 +65,32 @@ export const NewPost = ({ currentUser }) => {
             <input
               className="title-input"
               type="text"
-              value={post.title}
+              value={post.title || ""}
               placeholder="Post Title"
               required
               onChange={(event) => {
-                setTitleInput(event.target.value);
+                const postCopy = { ...post };
+                postCopy.title = event.target.value;
+                setPost(postCopy);
               }}
             />
           </div>
           <div>
-            {postId ? (
-              <select
-                required
-                value={selectedOption.id}
-                className="new-pst-topic"
-                onChange={(event) => {
-                  setNewPostTopic(event.target.value);
-                }}
-              >
-                <option>All Topics</option>
-                {allTopics.map((topic) => {
-                  return <TopicDropDown topic={topic} key={topic.id} />;
-                })}
-              </select>
-            ) : (
-              <select
-                required
-                // value={post.topic}
-                className="new-pst-topic"
-                defaultValue="0"
-                onChange={(event) => {
-                  setNewPostTopic(event.target.value);
-                }}
-              >
-                <option>All Topics</option>
-                {allTopics.map((topic) => {
-                  return <TopicDropDown topic={topic} key={topic.id} />;
-                })}
-              </select>
-            )}
+            <select
+              required
+              className="new-pst-topic"
+              value={post.topicId || "0"}
+              onChange={(event) => {
+                const postCopy = { ...post };
+                postCopy.topicId = event.target.value;
+                setPost(postCopy);
+              }}
+            >
+              <option>All Topics</option>
+              {allTopics.map((topic) => {
+                return <TopicDropDown topic={topic} key={topic.id} />;
+              })}
+            </select>
           </div>
           <div className="post-text">
             <textarea
@@ -108,7 +100,9 @@ export const NewPost = ({ currentUser }) => {
               type="text"
               placeholder="type your post here"
               onChange={(event) => {
-                setNewPostBody(event.target.value);
+                const postCopy = { ...post };
+                postCopy.body = event.target.value;
+                setPost(postCopy);
               }}
             ></textarea>
             <button className="save-btn" type="submit">

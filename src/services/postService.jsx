@@ -69,3 +69,9 @@ export const updatePost = (post) => {
   };
   return fetch(`http://localhost:8000/posts/${post.id}`, postOptions);
 };
+
+export const getPostByIdForEdit = (postId) => {
+  return fetch(`http://localhost:8000/posts/${postId} `).then((res) =>
+    res.json()
+  );
+};
