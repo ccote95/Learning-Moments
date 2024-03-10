@@ -58,3 +58,20 @@ export const deletePost = (post) => {
   };
   return fetch(`http://localhost:8000/posts/${post.id}`, postOptions);
 };
+
+export const updatePost = (post) => {
+  const postOptions = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(post),
+  };
+  return fetch(`http://localhost:8000/posts/${post.id}`, postOptions);
+};
+
+export const getPostByIdForEdit = (postId) => {
+  return fetch(`http://localhost:8000/posts/${postId} `).then((res) =>
+    res.json()
+  );
+};

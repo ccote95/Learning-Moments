@@ -4,7 +4,7 @@ import {
   getPostById,
   modifyLike,
 } from "../../services/postService.jsx";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./PostDetails.css";
 
 export const PostDetailsView = ({ currentUser }) => {
@@ -12,6 +12,7 @@ export const PostDetailsView = ({ currentUser }) => {
   const { postId } = useParams();
   const [hasLikedPost, setHasLikedPost] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     refreshPage();
@@ -72,7 +73,10 @@ export const PostDetailsView = ({ currentUser }) => {
     }
   };
 
-  console.log("these are posts", post);
+  const handleEditPostBtnClick = () => {
+    navigate(`/myposts/${post.id}`);
+  };
+
   return (
     <article className="full-post">
       <section className="post-info">
@@ -97,7 +101,7 @@ export const PostDetailsView = ({ currentUser }) => {
                 </button>
               )
             ) : (
-              <button>Edit Post</button>
+              <button onClick={handleEditPostBtnClick}>Edit Post</button>
             )}
           </div>
           <div className="post-likes">

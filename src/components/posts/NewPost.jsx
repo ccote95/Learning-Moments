@@ -2,15 +2,18 @@ import { useEffect, useState } from "react";
 import { GetAllTopics } from "../../services/TopicService.jsx";
 import { TopicDropDown } from "./Dropdown.jsx";
 import "./NewPost.css";
-import { createNewPost } from "../../services/postService.jsx";
+import {
+  createNewPost,
+  getPostByIdForEdit,
+  updatePost,
+} from "../../services/postService.jsx";
 import { useNavigate } from "react-router";
-
+import { useParams } from "react-router-dom";
 export const NewPost = ({ currentUser }) => {
+  const [post, setPost] = useState({});
   const [allTopics, setAllTopics] = useState([]);
-  const [titleInput, setTitleInput] = useState("");
-  const [newPostTopic, setNewPostTopic] = useState();
-  const [newPostBody, setNewPostBody] = useState("");
   const navigate = useNavigate();
+  const { postId } = useParams();
 
   useEffect(() => {
     GetAllTopics().then((topicArray) => {
@@ -18,17 +21,40 @@ export const NewPost = ({ currentUser }) => {
     });
   }, []);
 
+  useEffect(() => {
+    if (postId) {
+      getPostByIdForEdit(postId).then((postObj) => {
+        setPost(postObj);
+      });
+    }
+  }, [postId]);
+
   const handleSave = (e) => {
     e.preventDefault();
-    const newPostObject = {
-      userId: currentUser.id,
-      title: titleInput,
-      topicId: parseInt(newPostTopic),
-      body: newPostBody,
-      date: new Date().toDateString(),
-    };
-    createNewPost(newPostObject);
-    navigate(`/myposts`);
+    if (postId) {
+      const updatedPost = {
+        id: post.id,
+        userId: currentUser.id,
+        title: post.title,
+        topicId: parseInt(post.topicId),
+        body: post.body,
+        date: post.date,
+      };
+
+      updatePost(updatedPost).then(() => {
+        navigate(`/myposts`);
+      });
+    } else {
+      const newPostObject = {
+        userId: currentUser.id,
+        title: post.title,
+        topicId: parseInt(post.topicId),
+        body: post.body,
+        date: new Date().toDateString(),
+      };
+      createNewPost(newPostObject);
+      navigate(`/myposts`);
+    }
   };
 
   return (
@@ -37,11 +63,15 @@ export const NewPost = ({ currentUser }) => {
         <form className="form" onSubmit={handleSave}>
           <div className="new-pst-title">
             <input
+              className="title-input"
               type="text"
+              value={post.title || ""}
               placeholder="Post Title"
               required
               onChange={(event) => {
-                setTitleInput(event.target.value);
+                const postCopy = { ...post };
+                postCopy.title = event.target.value;
+                setPost(postCopy);
               }}
             />
           </div>
@@ -49,9 +79,11 @@ export const NewPost = ({ currentUser }) => {
             <select
               required
               className="new-pst-topic"
-              defaultValue="0"
+              value={post.topicId || "0"}
               onChange={(event) => {
-                setNewPostTopic(event.target.value);
+                const postCopy = { ...post };
+                postCopy.topicId = event.target.value;
+                setPost(postCopy);
               }}
             >
               <option>All Topics</option>
@@ -64,10 +96,13 @@ export const NewPost = ({ currentUser }) => {
             <textarea
               required
               className="text"
+              value={post.body}
               type="text"
               placeholder="type your post here"
               onChange={(event) => {
-                setNewPostBody(event.target.value);
+                const postCopy = { ...post };
+                postCopy.body = event.target.value;
+                setPost(postCopy);
               }}
             ></textarea>
             <button className="save-btn" type="submit">
